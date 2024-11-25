@@ -1,0 +1,7 @@
+CREATE TABLE Products (
+    Id          INTEGER PRIMARY KEY,
+    Name        TEXT    NOT NULL,
+    Description TEXT    NOT NULL,
+    Price       REAL    NOT NULL,
+    ImageName   TEXT
+);

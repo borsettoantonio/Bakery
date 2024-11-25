@@ -1,7 +1,12 @@
+using Bakery.Services.Application;
+using Bakery.Services.Infrastructure;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddRazorPages();
+builder.Services.AddTransient<IDatabaseAccessor, SqliteDatabaseAccessor>();
+builder.Services.AddTransient<IInitDb, InitDb>();
 
 var app = builder.Build();
 
