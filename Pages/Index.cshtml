@@ -3,8 +3,22 @@
 @{
     ViewData["Title"] = "Home page";
 }
-
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://learn.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+<h1 class="fw-light">Welcome sul fa-minus-octagon sito<i class="fas fa-minus-octagon    "></i></h1>
+<div class="row">
+    @foreach (var product in Model.Products)
+    {
+        <div class="col-3 p-1">
+            <div class="card h-100">
+                <img src="/images/products/@product.ImageName" class="img-fluid card-img-top" alt="@product.Name" />
+                <div class="card-body">
+                    <h5 class="card-title">@product.Name</h5>
+                    <p class="card-text">@product.Description</p>
+                    <div class="d-flex justify-content-between">
+                        <span class="card-text">@(product.Price.ToString("c"))</span>
+                        <a class="btn btn-danger btn-sm" asp-page="/Order" asp-route-id="@product.Id">Order Now</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    }
 </div>

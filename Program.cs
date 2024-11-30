@@ -7,6 +7,7 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddRazorPages();
 builder.Services.AddTransient<IDatabaseAccessor, SqliteDatabaseAccessor>();
 builder.Services.AddTransient<IInitDb, InitDb>();
+builder.Services.AddTransient<IProdotti, Prodotti>();
 
 var app = builder.Build();
 

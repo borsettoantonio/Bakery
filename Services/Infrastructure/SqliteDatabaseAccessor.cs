@@ -2,6 +2,7 @@ using System.Data;
 using Microsoft.Data.Sqlite;
 using System.Linq;
 using System.Configuration;
+using Bakery.Models;
 
 namespace Bakery.Services.Infrastructure
 {
@@ -31,6 +32,31 @@ namespace Bakery.Services.Infrastructure
                 Console.WriteLine(exc.Message);
                 return 0;
             }
+        }
+
+        public async Task<DataSet> QueryAsync(string query)
+        {
+            using SqliteConnection conn = await GetOpenedConnection();
+            using SqliteCommand cmd = conn.CreateCommand();
+            cmd.CommandText = query;
+            using var reader = await cmd.ExecuteReaderAsync();
+
+            var dataSet = new DataSet();
+            // ciclo per leggere più query
+            do
+            {
+                var dataTable = new DataTable();
+                dataSet.Tables.Add(dataTable);
+                dataTable.Load(reader);
+            } while (!reader.IsClosed);
+            /*
+            while (reader.Read())
+            {
+                string title = (string)reader["Title"];
+                ....
+            }
+            */
+            return dataSet;
         }
 
         private async Task<SqliteConnection> GetOpenedConnection()
