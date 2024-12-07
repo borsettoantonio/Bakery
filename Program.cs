@@ -1,6 +1,12 @@
 using Bakery.Services.Application;
 using Bakery.Services.Infrastructure;
 
+/* namespace Bakery;
+
+public class Program
+{
+    public static void Main()
+    { */
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
@@ -30,3 +36,5 @@ app.MapRazorPages()
    .WithStaticAssets();
 
 app.Run();
+/*    }
+} */

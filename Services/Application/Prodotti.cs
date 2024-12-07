@@ -64,5 +64,18 @@ namespace Bakery.Services.Application
             }
             return prodotto;
         }
+
+        public async Task Add(Product prod)
+        {
+            try
+            {
+                var query = $"INSERT INTO PRODUCTS (Name, Price, Description, ImageName) VALUES('{prod.Name}','{prod.Price}','{prod.Description}','{prod.ImageName}');";
+                var num = await db.CommandAsync(query);
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+            }
+        }
     }
 }

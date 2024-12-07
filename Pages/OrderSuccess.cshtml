@@ -6,5 +6,5 @@
     <div class="progress-bar w-100" style="font-size:1.5rem;" role="progressbar">Confirmation</div>
 </div>
 <h1>Order Confirmation</h1>
-@* <p>@TempData[nameof(OrderModel.Confirmation)]</p> *@
-<p>@TempData.Peek(nameof(OrderModel.Confirmation))</p>
+
+@Html.Raw(TempData[nameof(OrderModel.Confirmation)])
