@@ -1,4 +1,6 @@
 ﻿@page
+@using Bakery.Models
+
 @model IndexModel
 @{
     ViewData["Title"] = "Home page";
@@ -10,6 +12,7 @@
         <div class="col-3 p-1">
             <div class="card h-100">
                 <img src="/images/products/@product.ImageName" class="img-fluid card-img-top" alt="@product.Name" />
+
                 <div class="card-body">
                     <h5 class="card-title">@product.Name</h5>
                     <p class="card-text">@product.Description</p>

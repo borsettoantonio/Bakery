@@ -1,4 +1,5 @@
 22.11.2024
 Esempio dal tutorial di learnrazorpages.com
-07.12.2024
-Fine del tutorial
+10.12.2024
+Ho inserito delle prove con partial page, @functions e view component
+per il rendering di una parte ripetitiva di una pagina.

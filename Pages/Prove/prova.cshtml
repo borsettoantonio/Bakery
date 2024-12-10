@@ -1,0 +1,22 @@
+@page
+
+@* 
+Prova di pagina che contiene una funzione per il rendering
+di una parte ripetitiva di una pagina.
+*@
+
+@for (int i = 1; i < 5; i++)
+{
+    <div class="card h-100">
+        @{
+            Display(i);
+        }
+    </div>
+}
+
+@functions {
+    void Display(int i)
+    {
+        <span class="date">@i.ToString()</span>
+    }
+}
