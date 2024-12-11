@@ -7,6 +7,8 @@ namespace Bakery.Services.Application
         Task<List<Product>> GetProdotti();
         Task<Product?> FindAsync(int id);
         Task Add(Product prod);
+        Task Delete(int id);
+        Task<int> Update(Product prod);
     }
 
 }

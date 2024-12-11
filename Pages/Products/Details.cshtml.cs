@@ -6,40 +6,39 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 
 using Bakery.Models;
+using Bakery.Services.Application;
 
 namespace Bakery.Pages.Products
 {
     public class DetailsModel : PageModel
     {
-        public Product Product { get; set; } = default!;
-        /*
-        private readonly Bakery.Data.BakeryContext _context;
+        private readonly IProdotti prod;
 
-        public DetailsModel(Bakery.Data.BakeryContext context)
+        public DetailsModel(IProdotti _prod)
         {
-            _context = context;
+            prod = _prod;
         }
 
-      public Product Product { get; set; } = default!; 
+        public Product Product { get; set; } = default!;
 
         public async Task<IActionResult> OnGetAsync(int? id)
         {
-            if (id == null || _context.Products == null)
+            if (id == null || prod == null)
             {
                 return NotFound();
             }
 
-            var product = await _context.Products.FirstOrDefaultAsync(m => m.Id == id);
+            var product = await prod.FindAsync((int)id);
             if (product == null)
             {
                 return NotFound();
             }
-            else 
+            else
             {
                 Product = product;
             }
             return Page();
         }
-        */
+
     }
 }

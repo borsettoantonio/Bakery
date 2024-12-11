@@ -7,57 +7,50 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 
 
 using Bakery.Models;
+using Bakery.Services.Application;
 
 namespace Bakery.Pages.Products
 {
     public class DeleteModel : PageModel
     {
-
+        private readonly IProdotti prod;
         [BindProperty]
         public Product Product { get; set; } = default!;
 
-        /* public DeleteModel(Bakery.Data.BakeryContext context)
+        public DeleteModel(IProdotti _prod)
         {
-            _context = context;
-        } */
-        /* 
-             
-                public async Task<IActionResult> OnGetAsync(int? id)
-                {
-                    if (id == null || _context.Products == null)
-                    {
-                        return NotFound();
-                    }
+            prod = _prod;
+        }
 
-                    var product = await _context.Products.FirstOrDefaultAsync(m => m.Id == id);
+        public async Task<IActionResult> OnGetAsync(int? id)
+        {
+            if (id == null || prod == null)
+            {
+                return NotFound();
+            }
 
-                    if (product == null)
-                    {
-                        return NotFound();
-                    }
-                    else 
-                    {
-                        Product = product;
-                    }
-                    return Page();
-                }
+            var product = await prod.FindAsync((int)id);
 
-                public async Task<IActionResult> OnPostAsync(int? id)
-                {
-                    if (id == null || _context.Products == null)
-                    {
-                        return NotFound();
-                    }
-                    var product = await _context.Products.FindAsync(id);
+            if (product == null)
+            {
+                return NotFound();
+            }
+            else
+            {
+                Product = product;
+            }
+            return Page();
+        }
 
-                    if (product != null)
-                    {
-                        Product = product;
-                        _context.Products.Remove(Product);
-                        await _context.SaveChangesAsync();
-                    }
+        public async Task<IActionResult> OnPostAsync(int? id)
+        {
+            if (id == null || prod == null)
+            {
+                return NotFound();
+            }
+            await prod.Delete((int)id);
 
-                    return RedirectToPage("./Index");
-                } */
+            return RedirectToPage("./Index");
+        }
     }
 }

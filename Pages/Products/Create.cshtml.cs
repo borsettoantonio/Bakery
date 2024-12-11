@@ -38,9 +38,10 @@ namespace Bakery.Pages.Products
         // To protect from overposting attacks, see https://aka.ms/RazorPagesCRUD
         public async Task<IActionResult> OnPostAsync()
         {
+            bool errore = dec_string.Contains('.') ? true : false;
             Product.Price = decimal.Parse(dec_string, CultureInfo.CurrentCulture);
             ModelState.Remove("Product.ImageName");
-            if (!ModelState.IsValid || prod == null || Product == null)
+            if (!ModelState.IsValid || prod == null || Product == null || errore)
             {
                 return Page();
             }
