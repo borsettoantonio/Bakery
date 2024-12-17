@@ -62,6 +62,7 @@ namespace Bakery.Services.Infrastructure
         private async Task<SqliteConnection> GetOpenedConnection()
         {
             var conn = new SqliteConnection(config.GetSection("ConnectionStrings").GetValue<string>("Default"));
+            //var conn2 = new SqliteConnection(config.GetSection("ConnectionStrings")["Default"]);
             await conn.OpenAsync();
             return conn;
         }
