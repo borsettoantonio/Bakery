@@ -9,6 +9,7 @@ using Bakery.Models;
 using System.ComponentModel.DataAnnotations;
 using Bakery.Services.Application;
 using System.Globalization;
+using System.ComponentModel;
 
 namespace Bakery.Pages.Products
 {
@@ -38,10 +39,14 @@ namespace Bakery.Pages.Products
         // To protect from overposting attacks, see https://aka.ms/RazorPagesCRUD
         public async Task<IActionResult> OnPostAsync()
         {
+            /* var separatore = CultureInfo.CurrentCulture.NumberFormat.CurrencyGroupSeparator;
+            var separatoreInv = CultureInfo.InvariantCulture.NumberFormat.CurrencyGroupSeparator; */
+
             bool errore = dec_string.Contains('.') ? true : false;
             Product.Price = decimal.Parse(dec_string, CultureInfo.CurrentCulture);
+
             ModelState.Remove("Product.ImageName");
-            if (!ModelState.IsValid || prod == null || Product == null || errore)
+            if (!ModelState.IsValid || prod == null || Product == null) // || errore)
             {
                 return Page();
             }

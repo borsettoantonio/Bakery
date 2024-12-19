@@ -1,3 +1,4 @@
+using System.Globalization;
 using Bakery.Services.Application;
 using Bakery.Services.Infrastructure;
 
@@ -16,6 +17,14 @@ builder.Services.AddTransient<IInitDb, InitDb>();
 builder.Services.AddTransient<IProdotti, Prodotti>();
 builder.Services.AddSingleton<Store>();
 
+/*
+Esempio di creazione di un servizio passando un parametro al costruttore.
+Preso da learnrazorpage.com alla sezione: Dependency Injection in Razor Pages / Registering a Service with Constructor Parameters 
+Inoltre viene mostrato l'uso del parametro s della lambda di tipo IServiceProvider per recuperare un altro servizio
+in questo caso IConfiguration
+*/
+builder.Services.AddSingleton<IConnectionFactory>(s => new SqlConnectionFactory(s.GetService<IConfiguration>().GetSection("ConnectionStrings").GetValue<string>("Default")));
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
@@ -31,6 +40,16 @@ if (!app.Environment.IsDevelopment())
 app.UseHttpsRedirection();
 
 app.UseRouting();
+
+/*
+app.UseRequestLocalization(new RequestLocalizationOptions
+{
+    DefaultRequestCulture = new(CultureInfo.CurrentCulture),
+    SupportedCultures = new[] { CultureInfo.CurrentCulture },
+    SupportedUICultures = new[] { CultureInfo.CurrentCulture }
+});
+CultureInfo.DefaultThreadCurrentUICulture = CultureInfo.CurrentCulture;
+*/
 
 app.UseAuthorization();
 
@@ -75,13 +94,17 @@ public class ElapsedTimeMiddleware
 {
     RequestDelegate _next;
     Store store;
-    public ElapsedTimeMiddleware(RequestDelegate next, Store _store)
+    IConnectionFactory conn;
+    public ElapsedTimeMiddleware(RequestDelegate next, Store _store, IConnectionFactory _conn)
     {
         _next = next;
         store = _store;
+        conn = _conn;
     }
     public async Task InvokeAsync(HttpContext context, ILogger<ElapsedTimeMiddleware> logger)
     {
+        conn.CreateConnection();
+
         // prova condivisione dati tra middleware usando un servizio (Store)
         store.dato = "ElapsedTimeMiddleware";
 
