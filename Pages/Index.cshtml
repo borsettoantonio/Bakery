@@ -1,27 +1,18 @@
 ﻿@page
-@using Bakery.Models
-
 @model IndexModel
 @{
     ViewData["Title"] = "Home page";
 }
-<h1 class="fw-light">Welcome sul fa-minus-octagon sito<i class="fas fa-minus-octagon    "></i></h1>
-<div class="row">
-    @foreach (var product in Model.Products)
-    {
-        <div class="col-3 p-1">
-            <div class="card h-100">
-                <img src="/images/products/@product.ImageName" class="img-fluid card-img-top" alt="@product.Name" />
 
-                <div class="card-body">
-                    <h5 class="card-title">@product.Name</h5>
-                    <p class="card-text">@product.Description</p>
-                    <div class="d-flex justify-content-between">
-                        <span class="card-text">@(product.Price.ToString("c"))</span>
-                        <a class="btn btn-danger btn-sm" asp-page="/Order" asp-route-id="@product.Id">Order Now</a>
-                    </div>
-                </div>
-            </div>
-        </div>
-    }
+<div class="text-center">
+    <h1 class="display-4">Welcome</h1>
+    <form method="post">
+        <p>
+            <select asp-for="Number" asp-items="Model.Options" size="3">
+                <option value="">Choose a tag</option>
+            </select>
+            <br>
+            <input type="submit" value="Send Request" class="mt-5" />
+        </p>
+    </form>
 </div>
