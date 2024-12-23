@@ -1,0 +1,30 @@
+@page
+@model provaformModel
+
+@* 
+Prova di pagina che contiene un formcon due submit
+*@
+
+<form method="post">
+    <input type="text" asp-for="nome">
+    <input type="number" asp-for="numero">
+    <input type="submit" name="btnuno" value="uno">
+    <input type="submit" name="btndue" value="due">
+
+    <span>@Model.testo</span>
+    </br>
+    <button class="btn btn-primary mt-3" id="submit">Submit</button>
+</form>
+
+@section scripts {
+    <script>
+        $(function () {
+            $('#submit').on('click', function (evt) {
+                evt.preventDefault();
+                $.post('', $('form').serialize(), function () {
+                    alert('Posted using jQuery');
+                });
+            });
+        });
+    </script>
+}
