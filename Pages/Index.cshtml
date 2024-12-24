@@ -8,11 +8,16 @@
     <h1 class="display-4">Welcome</h1>
     <form method="post">
         <p>
-            <select asp-for="Number" asp-items="Model.Options" size="3">
-                <option value="">Choose a tag</option>
-            </select>
+            DateTime: <input asp-for="DateTime" asp-format="{0:yyyy-MM-dd HH:mm}" />
+            <br>
+            <br>
+            Data: <input asp-for="Date" />
+            <br>
+            <br>
+            Time: <input asp-for="Time" />
             <br>
             <input type="submit" value="Send Request" class="mt-5" />
+
         </p>
     </form>
 </div>
