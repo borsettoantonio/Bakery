@@ -17,6 +17,10 @@ public class IndexModel : PageModel
     [BindProperty, DataType(DataType.Time)]
     public DateTime Time { get; set; }
 
+    [BindProperty]
+    public string Gender { get; set; }
+    public string[] Genders = new[] { "Male", "Female", "Unspecified" };
+
     public IndexModel(ILogger<IndexModel> logger)
     {
         _logger = logger;

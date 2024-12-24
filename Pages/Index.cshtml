@@ -16,8 +16,14 @@
             <br>
             Time: <input asp-for="Time" />
             <br>
+            <br>
+            @foreach (var gender in Model.Genders)
+            {
+                <input type="radio" asp-for="Gender" value="@gender" />
+                @gender
+                <br />
+            }
             <input type="submit" value="Send Request" class="mt-5" />
-
         </p>
     </form>
 </div>
