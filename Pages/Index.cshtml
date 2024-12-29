@@ -1,4 +1,4 @@
-﻿@page
+﻿@page "{statoStr?}"
 @model IndexModel
 @{
     ViewData["Title"] = "Home page";
@@ -8,21 +8,10 @@
     <h1 class="display-4">Welcome</h1>
     <form method="post">
         <p>
-            DateTime: <input asp-for="DateTime" asp-format="{0:yyyy-MM-dd HH:mm}" />
+            <input type="hidden" asp-for="statoStr" value="@Model.statoStr" />
+            Contatore <input asp-for="count" value="@Model.count" />
             <br>
             <br>
-            Data: <input asp-for="Date" />
-            <br>
-            <br>
-            Time: <input asp-for="Time" />
-            <br>
-            <br>
-            @foreach (var gender in Model.Genders)
-            {
-                <input type="radio" asp-for="Gender" value="@gender" />
-                @gender
-                <br />
-            }
             <input type="submit" value="Send Request" class="mt-5" />
         </p>
     </form>
