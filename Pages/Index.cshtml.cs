@@ -1,6 +1,7 @@
 using System.Text.Json;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using Select.Services;
 
 
 namespace Select.Pages;
@@ -8,6 +9,7 @@ namespace Select.Pages;
 public class IndexModel : PageModel
 {
     private readonly ILogger<IndexModel> _logger;
+    private readonly IHttpContextAccessor httpContextAccessor;
 
     public Stato stato { get; set; } = new();  // contiene lo stato da preservare
     [BindProperty(SupportsGet = true)]
@@ -16,14 +18,16 @@ public class IndexModel : PageModel
     public int count { get; set; }              // campo di input della pagina
 
 
-    public IndexModel(ILogger<IndexModel> logger)
+    public IndexModel(ILogger<IndexModel> logger, IHttpContextAccessor _httpContextAccessor)
     {
         _logger = logger;
+        httpContextAccessor = _httpContextAccessor;
     }
 
     public void OnGet()
     {
-        //stato.cnt = 0;
+        Cookie cookie = new(httpContextAccessor);
+        statoStr = cookie.Get("stato");
         if (statoStr != null)
         {
             stato = DecodeFromBase64(statoStr);
@@ -34,18 +38,23 @@ public class IndexModel : PageModel
             statoStr = EncodeToBase64(stato);
         }
 
-        ViewData["stato"] = statoStr;
+        cookie.Set("stato", statoStr, null);
+        //ViewData["stato"] = statoStr;
     }
 
     public void OnPost()
     {
-        stato = DecodeFromBase64(statoStr);
-        ++stato.cnt;
-        count = stato.cnt;
-        statoStr = EncodeToBase64(stato);
-        ViewData["stato"] = statoStr;
+        Cookie cookie = new(httpContextAccessor);
+        statoStr = cookie.Get("stato");
+        if (statoStr != null)
+        {
+            stato = DecodeFromBase64(statoStr);
+            ++stato.cnt;
+            count = stato.cnt;
+            statoStr = EncodeToBase64(stato);
+            cookie.Set("stato", statoStr, null);
+        }
     }
-
     private string EncodeToBase64(Stato value)
     {
         var valueBytes = JsonSerializer.SerializeToUtf8Bytes<Stato>(value);

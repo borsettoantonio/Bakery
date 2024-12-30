@@ -1,4 +1,4 @@
-﻿@page "{statoStr?}"
+﻿@page
 @model IndexModel
 @{
     ViewData["Title"] = "Home page";
@@ -8,7 +8,6 @@
     <h1 class="display-4">Welcome</h1>
     <form method="post">
         <p>
-            <input type="hidden" asp-for="statoStr" value="@Model.statoStr" />
             Contatore <input asp-for="count" value="@Model.count" />
             <br>
             <br>
