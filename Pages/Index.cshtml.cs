@@ -9,62 +9,53 @@ namespace Select.Pages;
 public class IndexModel : PageModel
 {
     private readonly ILogger<IndexModel> _logger;
-    private readonly IHttpContextAccessor httpContextAccessor;
 
     public Stato stato { get; set; } = new();  // contiene lo stato da preservare
-    [BindProperty(SupportsGet = true)]
-    public string statoStr { get; set; }        // contiene la stringa in Base64 della rappresentazione json dello stato
+    // [TempData]
+    // public string statoStr { get; set; }        // contiene la stringa in Base64 della rappresentazione json dello stato
     [BindProperty]
     public int count { get; set; }              // campo di input della pagina
 
 
-    public IndexModel(ILogger<IndexModel> logger, IHttpContextAccessor _httpContextAccessor)
+    public IndexModel(ILogger<IndexModel> logger)
     {
         _logger = logger;
-        httpContextAccessor = _httpContextAccessor;
     }
 
     public void OnGet()
     {
-        Cookie cookie = new(httpContextAccessor);
-        statoStr = cookie.Get("stato");
+        var statoStr = (string)TempData["statoStr"]!;
         if (statoStr != null)
         {
-            stato = DecodeFromBase64(statoStr);
+            stato = DecodeFromBase64<Stato>(statoStr);
             count = stato.cnt;
         }
-        else
-        {
-            statoStr = EncodeToBase64(stato);
-        }
-
-        cookie.Set("stato", statoStr, null);
-        //ViewData["stato"] = statoStr;
+        TempData["statoStr"] = EncodeToBase64(stato);
+        //statoStr = EncodeToBase64(stato);
     }
 
     public void OnPost()
     {
-        Cookie cookie = new(httpContextAccessor);
-        statoStr = cookie.Get("stato");
+        var statoStr = (string)TempData["statoStr"]!;
         if (statoStr != null)
         {
-            stato = DecodeFromBase64(statoStr);
+            stato = DecodeFromBase64<Stato>(statoStr);
             ++stato.cnt;
             count = stato.cnt;
-            statoStr = EncodeToBase64(stato);
-            cookie.Set("stato", statoStr, null);
+            TempData["statoStr"] = EncodeToBase64(stato);
+            //statoStr = EncodeToBase64(stato);
         }
     }
-    private string EncodeToBase64(Stato value)
+    private string EncodeToBase64<T>(T value)
     {
-        var valueBytes = JsonSerializer.SerializeToUtf8Bytes<Stato>(value);
+        var valueBytes = JsonSerializer.SerializeToUtf8Bytes<T>(value);
         return Convert.ToBase64String(valueBytes);
     }
-    private Stato DecodeFromBase64(string value)
+    private T DecodeFromBase64<T>(string value)
     {
         var valueBytes = System.Convert.FromBase64String(value);
         var readOnlySpan = new ReadOnlySpan<byte>(valueBytes);
-        return JsonSerializer.Deserialize<Stato>(readOnlySpan)!;
+        return JsonSerializer.Deserialize<T>(readOnlySpan)!;
     }
 
     // per poter trasformare in json la classe occorre 
