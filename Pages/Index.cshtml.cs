@@ -1,7 +1,6 @@
 using System.Text.Json;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using Select.Services;
 
 
 namespace Select.Pages;
@@ -24,26 +23,27 @@ public class IndexModel : PageModel
 
     public void OnGet()
     {
-        var statoStr = (string)TempData["statoStr"]!;
+        var statoStr = HttpContext.Session.GetString("statoStr");
         if (statoStr != null)
         {
             stato = DecodeFromBase64<Stato>(statoStr);
             count = stato.cnt;
         }
-        TempData["statoStr"] = EncodeToBase64(stato);
-        //statoStr = EncodeToBase64(stato);
+        else
+        {
+            HttpContext.Session.SetString("statoStr", EncodeToBase64(stato));
+        }
     }
 
     public void OnPost()
     {
-        var statoStr = (string)TempData["statoStr"]!;
+        var statoStr = HttpContext.Session.GetString("statoStr");
         if (statoStr != null)
         {
             stato = DecodeFromBase64<Stato>(statoStr);
             ++stato.cnt;
             count = stato.cnt;
-            TempData["statoStr"] = EncodeToBase64(stato);
-            //statoStr = EncodeToBase64(stato);
+            HttpContext.Session.SetString("statoStr", EncodeToBase64(stato));
         }
     }
     private string EncodeToBase64<T>(T value)
