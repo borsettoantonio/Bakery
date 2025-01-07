@@ -16,6 +16,7 @@ builder.Services.AddTransient<IDatabaseAccessor, SqliteDatabaseAccessor>();
 builder.Services.AddTransient<IInitDb, InitDb>();
 builder.Services.AddTransient<IProdotti, Prodotti>();
 builder.Services.AddSingleton<Store>();
+builder.Services.AddTransient<ICarService, CarService>();
 
 /*
 Esempio di creazione di un servizio passando un parametro al costruttore.

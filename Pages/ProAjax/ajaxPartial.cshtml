@@ -1,0 +1,49 @@
+@page
+@model ajaxPartialModel
+<h2>Ajax Partial Example</h2>
+<p><button class="btn btn-primary" id="load">Load</button></p>
+<div id="grid"></div>
+
+@* versione con XMLHttpRequest *@
+@section scripts {
+    <script>
+        document.getElementById('load').addEventListener('click', () => {
+            var xhr = new XMLHttpRequest();
+            xhr.onreadystatechange = function () {
+                if (this.readyState == 4 && this.status == 200) {
+                    document.getElementById('grid').innerHTML = this.responseText;
+                }
+            };
+            xhr.open('get', '/Proajax/ajaxPartial?handler=CarPartial');
+            xhr.send();
+        });
+    </script>
+}
+
+@* versione con jQuery  
+@section scripts{
+    <script>
+        $(function () {
+            $('#load').on('click', function () {
+                $('#grid').load('/Proajax/ajaxPartial?handler=CarPartial');
+            });
+        });
+    </script>
+}
+*@
+
+@* versione con Fetch API   
+@section scripts{
+    <script>
+        document.getElementById('load').addEventListener('click', () => {
+            fetch('/ajaxpartial?handler=CarPartial')
+                .then((response) => {
+                    return response.text();
+                })
+                .then((result) => {
+                    document.getElementById('grid').innerHTML = result;
+                });
+        });
+    </script>
+}
+*@
