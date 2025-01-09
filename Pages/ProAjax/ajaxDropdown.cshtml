@@ -1,0 +1,57 @@
+@page
+@model CascadingDropdownsModel
+
+<div class="row">
+    <div class="form-group  col-sm-6">
+        <h4>Categories</h4>
+        <select asp-for="CategoryId" asp-items="Model.Categories" class="col-sm-6">
+            <option value="">Select Category</option>
+        </select>
+    </div>
+
+    <div class="form-group  col-sm-6">
+        <h4>SubCategories</h4>
+        <select asp-for="SubCategoryId" class="col-sm-6">
+            <option value="">Select SubCategory</option>
+        </select>
+    </div>
+</div>
+
+@* versione con Fetch API *@
+@section scripts {
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            document.getElementById('CategoryId').addEventListener('change', (e) => {
+                document.getElementById('SubCategoryId').innerHTML = "<option value=''>Select SubCategory</option>";
+                fetch(`?handler=SubCategories&categoryId=${e.target.value}`)
+                    .then((response) => {
+                        return response.json();
+                    })
+                    .then((data) => {
+                        Array.prototype.forEach.call(data, function (item, i) {
+                            document.getElementById('SubCategoryId').innerHTML += `<option value="${item.subCategoryId}">${item.subCategoryName}</option>`
+                        });
+                    });
+            });
+        });
+    </script>
+}
+
+@* versione con jQuery  
+@section scripts{ 
+<script>
+    $(function () {
+        $("#CategoryId").on("change", function() {
+            var categoryId = $(this).val();
+            $("#SubCategoryId").empty();
+            $("#SubCategoryId").append("<option value=''>Select SubCategory</option>");
+            $.getJSON(`?handler=SubCategories&categoryId=${categoryId}`, (data) => {
+                $.each(data, function (i, item) {
+                    $("#SubCategoryId").append(`<option value="${item.subCategoryId}">${item.subCategoryName}</option>`);
+                });
+            });
+        });
+    });
+</script>
+}
+*@

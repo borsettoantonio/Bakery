@@ -17,6 +17,7 @@ builder.Services.AddTransient<IInitDb, InitDb>();
 builder.Services.AddTransient<IProdotti, Prodotti>();
 builder.Services.AddSingleton<Store>();
 builder.Services.AddTransient<ICarService, CarService>();
+builder.Services.AddTransient<ICategoryService, CategoryService>();
 
 /*
 Esempio di creazione di un servizio passando un parametro al costruttore.
